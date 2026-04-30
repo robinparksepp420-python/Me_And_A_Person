@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Interface // Ad Overload</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: monospace;
+  background: black;
+  color: #00ff00;
+}
+
+/* MATRIX */
+#matrixCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* scanlines */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  animation: scan 0.15s linear infinite;
+  z-index: 50;
+}
+
+@keyframes scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+/* ===== ADS ===== */
+
+.top-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  z-index: 5;
+}
+.bottom-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  z-index: 5;
+}
+.left-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 6;
+}
+.right-banner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  overflow: hidden;
+  z-index: 6;
+}
+
+.top-strip, .bottom-strip {
+  display: flex;
+  width: max-content;
+  height: 100%;
+}
+
+.left-strip, .right-strip {
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+}
+
+.top-strip { animation: topScroll 10s linear infinite; }
+.bottom-strip { animation: bottomScroll 9s linear infinite; }
+.left-strip { animation: leftScroll 12s linear infinite; }
+.right-strip { animation: rightScroll 11s linear infinite; }
+
+.top-strip img,
+.bottom-strip img {
+  height: 100%;
+}
+
+.left-strip img,
+.right-strip img {
+  width: 100%;
+  height: 50%;
+}
+
+/* CENTER UI */
+.center-wrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.verify-box {
+  width: 420px;
+  background: rgba(0,0,0,0.85);
+  padding: 24px;
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 25px #00ff00;
+  animation: glitch 0.25s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(1px,-1px); }
+  50% { transform: translate(-1px,1px); }
+  75% { transform: translate(1px,1px); }
+  100% { transform: translate(0,0); }
+}
+
+h2 { margin: 0 0 10px; }
+
+input {
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px;
+  background: black;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: #00ff00;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* animations */
+@keyframes topScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes bottomScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes leftScroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+@keyframes rightScroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+
+<!-- ADS -->
+<div class="top-banner"><div class="top-strip" id="top-strip"></div></div>
+<div class="bottom-banner"><div class="bottom-strip" id="bottom-strip"></div></div>
+<div class="left-banner"><div class="left-strip" id="left-strip"></div></div>
+<div class="right-banner"><div class="right-strip" id="right-strip"></div></div>
+
+<!-- CENTER -->
+<div class="center-wrap">
+  <div class="verify-box">
+    <h2>> SYSTEM AUTH NODE</h2>
+
+    <input id="node" type="text" placeholder="NODE ID">
+    <input id="hash" type="text" placeholder="AUTH HASH">
+    <input id="signal" type="text" placeholder="SIGNAL KEY">
+    <input id="session" type="text" placeholder="SESSION TOKEN">
+
+    <button id="btn">INITIALIZE HANDSHAKE</button>
+  </div>
+</div>
+
+<script>
+// MATRIX
+const canvas = document.getElementById("matrixCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "01$#@%&*/";
+const fontSize = 16;
+const drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
+
+function draw() {
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle = "#00ff00";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+
+    ctx.fillText(
+      char,
+      i * fontSize + (Math.random()*2-1),
+      drops[i] * fontSize
+    );
+
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+
+    drops[i] += Math.random() * 1.2;
+  }
+}
+setInterval(draw, 35);
+
+// ADS FILL
+function fillHorizontal(id, src, count) {
+  const el = document.getElementById(id);
+  for (let i = 0; i < count * 2; i++) {
+    const img = document.createElement("img");
+    img.src = src;
+    el.appendChild(img);
+  }
+}
+
+function fillVertical(id, src) {
+  const el = document.getElementById(id);
+  for (let i = 0; i < 4; i++) {
+    const img = document.createElement("img");
+    img.src = src;
+    el.appendChild(img);
+  }
+}
+
+// fake ads
+fillHorizontal("top-strip", "ad.png", 10);
+fillHorizontal("bottom-strip", "not_a_bot.png", 10);
+fillVertical("left-strip", "oldspice.png");
+fillVertical("right-strip", "loreal.png");
+
+// BUTTON + REDIRECT
+document.getElementById("btn").addEventListener("click", () => {
+  const btn = document.getElementById("btn");
+  btn.innerText = "PROCESSING...";
+
+  setTimeout(() => {
+    btn.innerText = "ACCESS GRANTED";
+    document.body.style.filter = "hue-rotate(90deg) contrast(1.3)";
+
+    setTimeout(() => {
+      window.location.href = "https://geekprank.com/matrix-code-rain/";
+    }, 800);
+
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
