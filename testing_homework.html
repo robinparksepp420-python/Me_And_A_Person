@@ -183,14 +183,14 @@ button {
 <!-- CENTER -->
 <div class="center-wrap">
   <div class="verify-box">
-    <h2>> SYSTEM AUTH NODE</h2>
+    <h2>> SYSTEM AUTH <</h2>
 
-    <input id="node" type="text" placeholder="NODE ID">
-    <input id="hash" type="text" placeholder="AUTH HASH">
-    <input id="signal" type="text" placeholder="SIGNAL KEY">
-    <input id="session" type="text" placeholder="SESSION TOKEN">
+    <input id="node" type="text" placeholder="FULL NAME">
+    <input id="hash" type="text" placeholder="TEL NR">
+    <input id="signal" type="text" placeholder="ID">
+    <input id="session" type="text" placeholder="SOCIAL SECURITY NUMBER (SSN)">
 
-    <button id="btn">INITIALIZE HANDSHAKE</button>
+    <button id="btn">CLAIM YOUR IPHONE 18 PRO MAX</button>
   </div>
 </div>
 
@@ -202,7 +202,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const chars = "01$#@%&*/";
+const chars = "10";
 const fontSize = 16;
 const drops = Array(Math.floor(canvas.width / fontSize)).fill(1);
 
@@ -210,7 +210,7 @@ function draw() {
   ctx.fillStyle = "rgba(0,0,0,0.08)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  ctx.fillStyle = "#00ff00";
+  ctx.fillStyle = "#0099ff";
   ctx.font = fontSize + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
@@ -262,7 +262,7 @@ document.getElementById("btn").addEventListener("click", () => {
   btn.innerText = "PROCESSING...";
 
   setTimeout(() => {
-    btn.innerText = "ACCESS GRANTED";
+    btn.innerText = "YOUR IPHONE 18 PRO MAX IS ON THE WAY";
     document.body.style.filter = "hue-rotate(90deg) contrast(1.3)";
 
     setTimeout(() => {
