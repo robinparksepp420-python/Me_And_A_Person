@@ -16,14 +16,14 @@ html, body {
   color: #00ff00;
 }
 
-/* MATRIX */
+/ MATRIX /
 #matrixCanvas {
   position: fixed;
   inset: 0;
   z-index: 0;
 }
 
-/* scanlines */
+/ scanlines /
 body::before {
   content: "";
   position: fixed;
@@ -44,7 +44,7 @@ body::before {
   100% { transform: translateY(10px); }
 }
 
-/* ===== ADS ===== */
+/ ===== ADS ===== /
 
 .top-banner {
   position: fixed;
@@ -95,23 +95,29 @@ body::before {
   height: 200%;
 }
 
+/ SCROLL ANIMATIONS /
 .top-strip { animation: topScroll 10s linear infinite; }
 .bottom-strip { animation: bottomScroll 9s linear infinite; }
 .left-strip { animation: leftScroll 12s linear infinite; }
 .right-strip { animation: rightScroll 11s linear infinite; }
 
+/ 🔥 FIXED: STRETCHED HORIZONTAL ADS /
 .top-strip img,
 .bottom-strip img {
+  width: 400px;        / controls stretch /
   height: 100%;
+  object-fit: fill;    / forces sideways distortion /
+  flex-shrink: 0;      / prevents squishing /
 }
 
+/ vertical ads stay normal /
 .left-strip img,
 .right-strip img {
   width: 100%;
   height: 50%;
 }
 
-/* CENTER UI */
+/ CENTER UI /
 .center-wrap {
   position: fixed;
   inset: 0;
@@ -161,7 +167,7 @@ button {
   font-weight: bold;
 }
 
-/* animations */
+/ animations /
 @keyframes topScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes bottomScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes leftScroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
@@ -185,10 +191,10 @@ button {
   <div class="verify-box">
     <h2>> SYSTEM AUTH <</h2>
 
-    <input id="node" type="text" placeholder="FULL NAME">
-    <input id="hash" type="text" placeholder="TEL NR">
-    <input id="signal" type="text" placeholder="ID">
-    <input id="session" type="text" placeholder="SOCIAL SECURITY NUMBER (SSN)">
+    <input type="text" placeholder="FULL NAME">
+    <input type="text" placeholder="TEL NR">
+    <input type="text" placeholder="ID">
+    <input type="text" placeholder="SOCIAL SECURITY NUMBER (SSN)">
 
     <button id="btn">CLAIM YOUR IPHONE 18 PRO MAX</button>
   </div>
@@ -250,7 +256,7 @@ function fillVertical(id, src) {
   }
 }
 
-// fake ads
+// ads
 fillHorizontal("top-strip", "ad.png", 10);
 fillHorizontal("bottom-strip", "not_a_bot.png", 10);
 fillVertical("left-strip", "oldspice.png");
